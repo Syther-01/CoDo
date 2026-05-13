@@ -63,7 +63,7 @@ function ContestDepthAnalyzer({
 
         // FETCH ALL PROBLEMS
         const response = await fetch(
-          "/cfapi/problemset.problems"
+          "https://codeforces.com/api/problemset.problems"
         )
 
         const data =
