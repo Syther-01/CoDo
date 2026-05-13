@@ -3,6 +3,9 @@ from "react"
 
 import axios from "axios"
 
+const API =
+  import.meta.env.VITE_BACKEND_URL
+
 import { Link, useNavigate }
 from "react-router-dom"
 
@@ -45,12 +48,9 @@ function Login() {
 
       const res =
         await axios.post(
-
-          "http://localhost:5000/api/auth/login",
-
+          `${API}/api/auth/login`,
           formData
-
-        )
+        )   
 
       // Save token
       localStorage.setItem(

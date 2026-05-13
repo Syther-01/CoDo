@@ -6,6 +6,10 @@ import axios from "axios"
 import { Link, useNavigate }
 from "react-router-dom"
 
+const API =
+  import.meta.env.VITE_BACKEND_URL
+
+
 function Signup() {
 
   const navigate =
@@ -52,11 +56,8 @@ function Signup() {
 
       const res =
         await axios.post(
-
-          "http://localhost:5000/api/auth/signup",
-
+          `${API}/api/auth/signup`,
           formData
-
         )
 
       // Save token

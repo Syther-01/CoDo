@@ -4,6 +4,9 @@ import axios from "axios"
 
 import Navbar from "../components/Navbar"
 
+const API =
+  import.meta.env.VITE_BACKEND_URL
+
 function Profile() {
 
   const savedUser =
@@ -54,7 +57,7 @@ function Profile() {
       const res =
         await axios.post(
 
-          "http://localhost:5000/api/auth/update-profile",
+          `${API}/api/auth/update-profile`,
 
           {
 
@@ -108,7 +111,7 @@ function Profile() {
       const res =
         await axios.post(
 
-          "http://localhost:5000/api/auth/change-password",
+          `${API}/api/auth/change-password`,
 
           {
 
