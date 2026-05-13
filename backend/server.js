@@ -25,6 +25,19 @@ app.use(cors())
 app.use(express.json())
 
 app.use(
+
+  cors({
+
+    origin:
+      "https://co-do-1hos.vercel.app",
+
+    credentials: true
+
+  })
+
+)
+
+app.use(
   "/api/auth",
   authRoutes
 )
