@@ -28,8 +28,22 @@ app.use(
 
   cors({
 
-    origin:
-      "https://co-do-1hos.vercel.app",
+    origin: [
+
+      "http://localhost:5173",
+
+      "https://co-do-1hos.vercel.app"
+
+    ],
+
+    methods: [
+
+      "GET",
+      "POST",
+      "PUT",
+      "DELETE"
+
+    ],
 
     credentials: true
 
