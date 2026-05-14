@@ -43,86 +43,117 @@ function TopicAnalytics({ submissions = [] }) {
 
   })
 
+  // STORE LESS PRACTISED TOPICS
+  const lessPractisedTopics = []
+
   // CREATE TOPIC RATINGS
   const chartData =
 
-  Object.entries(topicStats)
+    Object.entries(topicStats)
 
-    .map(([tag, ratings]) => {
+      .map(([tag, ratings]) => {
 
-      const sortedRatings =
+        const sortedRatings =
 
-        Object.entries(ratings)
+          Object.entries(ratings)
 
-          .map(([rating, count]) => ({
+            .map(([rating, count]) => ({
 
-            rating: Number(rating),
+              rating: Number(rating),
 
-            count
+              count
 
-          }))
+            }))
 
-          .sort((a, b) =>
-            a.rating - b.rating
-          )
+            .sort((a, b) =>
+              a.rating - b.rating
+            )
 
-      let topicRating = 0
+        let topicRating = 0
 
-      let totalSolved = 0
+        let totalSolved = 0
 
-      sortedRatings.forEach((item) => {
+        sortedRatings.forEach((item) => {
 
-        totalSolved += item.count
+          totalSolved += item.count
 
-      })
+        })
 
-      // Find maximum rating
-      // where >=10 solved above it
-      sortedRatings.forEach((item) => {
+        // FIND MAXIMUM RATING
+        // WHERE >=10 SOLVED ABOVE IT
+        sortedRatings.forEach((item) => {
 
-        let solvedAbove = 0
+          let solvedAbove = 0
 
-        sortedRatings.forEach((x) => {
+          sortedRatings.forEach((x) => {
 
-          if (x.rating >= item.rating) {
+            if (x.rating >= item.rating) {
 
-            solvedAbove += x.count
+              solvedAbove += x.count
+
+            }
+
+          })
+
+          if (solvedAbove >= 10) {
+
+            topicRating =
+              Math.max(
+                topicRating,
+                item.rating
+              )
 
           }
 
         })
 
-        if (solvedAbove >= 10) {
+        // STORE LOW PRACTISED TOPICS
+        if (
+          topicRating === 0 &&
+          totalSolved < 10
+        ) {
 
-          topicRating =
-            Math.max(
-              topicRating,
-              item.rating
-            )
+          lessPractisedTopics.push({
+
+            topic: tag,
+
+            solved: totalSolved
+
+          })
+
+        }
+
+        return {
+
+          topic: tag,
+
+          rating: topicRating,
+
+          solved: totalSolved
 
         }
 
       })
 
-      return {
+      // REMOVE LOW PRACTISED TOPICS
+      .filter((item) =>
 
-        topic: tag,
+        item.solved >= 5 &&
 
-        rating: topicRating,
+        !(
 
-        solved: totalSolved
+          item.rating === 0 &&
 
-      }
+          item.solved < 10
 
-    })
+        )
+      )
 
-    .filter((item) =>
-      item.solved >= 5
-    )
+      .sort((a, b) =>
+        b.rating - a.rating
+      )
 
-    .sort((a, b) =>
-      b.rating - a.rating
-    )
+  // STRONGEST TOPICS
   const strongestTopics =
 
     [...chartData]
@@ -420,6 +451,74 @@ function TopicAnalytics({ submissions = [] }) {
           </div>
 
         </div>
+
+      </div>
+
+      {/* LESS PRACTISED */}
+      <div className="bg-white/5 border border-white/10 rounded-3xl p-8 mt-12">
+
+        <h3 className="text-3xl font-bold mb-3 text-white-400">
+
+          Less Practised Topics
+
+        </h3>
+
+        <p className="text-gray-500 mb-8">
+
+          Topics with insufficient solved problems
+          to generate a reliable topic rating.
+
+        </p>
+
+        {
+
+          lessPractisedTopics.length ? (
+
+            <div className="flex flex-wrap gap-4">
+
+              {
+
+                lessPractisedTopics.map(
+                  (topic, index) => (
+
+                    <div
+                      key={index}
+
+                      className="bg-black/30 border border-white/10 rounded-2xl px-5 py-3"
+                    >
+
+                      <p className="text-lg font-semibold capitalize text-white">
+
+                        {topic.topic}
+
+                      </p>
+
+                      <p className="text-sm text-gray-400 mt-1">
+
+                        {topic.solved} problems solved
+
+                      </p>
+
+                    </div>
+
+                  )
+                )
+
+              }
+
+            </div>
+
+          ) : (
+
+            <p className="text-lg text-gray-300">
+
+              No less practised topics found.
+
+            </p>
+
+          )
+
+        }
 
       </div>
 
